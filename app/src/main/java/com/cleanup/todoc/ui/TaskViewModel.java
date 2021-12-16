@@ -25,13 +25,13 @@ public class TaskViewModel extends ViewModel {
     }
 
     // FOR PROJECT
-    public LiveData<List<Project>> getProject() {
-        return mProjectRepository.getProject();
+    public LiveData<List<Project>> getAllProject() {
+        return mProjectRepository.getAllProject();
     }
 
     // FOR TASK
-    public LiveData<List<Task>> getTask() {
-        return mTaskRepository.getTask();
+    public LiveData<List<Task>> getAllTasks() {
+        return mTaskRepository.getAllTask();
     }
 
     public void insertTask(Task task) {

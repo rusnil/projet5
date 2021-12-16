@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -123,8 +122,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
         this.mTaskViewModel = new ViewModelProvider(this, mViewModelFactory).get(TaskViewModel.class);
 
-        this.mTaskViewModel.getTask().observe(this,this::updateListTasks);
-        this.mTaskViewModel.getProject().observe(this, projects -> {
+        this.mTaskViewModel.getAllTasks().observe(this,this::updateListTasks);
+        this.mTaskViewModel.getAllProject().observe(this, projects -> {
             allProjects = (ArrayList<Project>) projects;
             adapter.updateProjects(projects);
         });

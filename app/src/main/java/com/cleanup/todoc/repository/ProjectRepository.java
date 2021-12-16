@@ -15,7 +15,8 @@ public class ProjectRepository {
         mProjectDao = projectDao;
     }
 
-    public LiveData<List<Project>> getProject(){
-        return this.mProjectDao.getProject();
+    public LiveData<List<Project>> getAllProject(){
+        return this.mProjectDao.getAllProject();
     }
+
 }
