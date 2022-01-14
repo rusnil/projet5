@@ -28,19 +28,16 @@ public class Task {
      * The unique identifier of the project associated to the task
      */
     public long projectId;
-
-    /**
-     * The name of the task
-     */
-    // Suppress warning because setName is called in constructor
-    @SuppressWarnings("NullableProblems")
-    @NonNull
-    private String name;
-
     /**
      * The timestamp when the task has been created
      */
     public long creationTimestamp;
+    /**
+     * The name of the task
+     */
+    // Suppress warning because setName is called in constructor
+    @NonNull
+    private String name;
 
     /**
      * Instantiates a new Task.

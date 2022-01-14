@@ -25,9 +25,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
-         if (modelClass.isAssignableFrom(TaskViewModel.class)) {
-             return (T) new TaskViewModel(mProjectRepository, mTaskRepository, mExecutor);
-         }
+        if (modelClass.isAssignableFrom(TaskViewModel.class)) {
+            return (T) new TaskViewModel(mProjectRepository, mTaskRepository, mExecutor);
+        }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }
 }

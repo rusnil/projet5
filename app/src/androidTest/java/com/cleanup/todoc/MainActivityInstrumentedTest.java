@@ -10,7 +10,6 @@ import static com.cleanup.todoc.TestUtils.withRecyclerView;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-
 import android.view.View;
 import android.widget.TextView;
 

@@ -18,19 +18,16 @@ import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
 @Database(entities = {Project.class, Task.class}, version = 1, exportSchema = false)
-public abstract class SaveDatabase extends RoomDatabase {
+public abstract class TaskDatabase extends RoomDatabase {
 
-    public static volatile SaveDatabase INSTANCE;
+    public static volatile TaskDatabase INSTANCE;
 
-    public abstract ProjectDao projectDao();
-    public abstract TaskDao taskDao();
-
-    public static SaveDatabase getInstance(Context context) {
+    public static TaskDatabase getInstance(Context context) {
         if (INSTANCE == null) {
-            synchronized (SaveDatabase.class) {
+            synchronized (TaskDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            SaveDatabase.class, "MyDatabase.db")
+                            TaskDatabase.class, "MyDatabase.db")
                             .addCallback(prepopulateDatabase())
                             .build();
                 }
@@ -39,7 +36,7 @@ public abstract class SaveDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    private static Callback prepopulateDatabase(){
+    private static Callback prepopulateDatabase() {
         return new Callback() {
 
             @Override
@@ -48,12 +45,16 @@ public abstract class SaveDatabase extends RoomDatabase {
 
                 ContentValues projectValues = new ContentValues();
                 for (Project project : getAllProjects()) {
-                projectValues.put("id", project.getId());
-                projectValues.put("name", project.getName());
-                projectValues.put("color", project.getColor());
-                db.insert("Project", OnConflictStrategy.IGNORE, projectValues);
+                    projectValues.put("id", project.getId());
+                    projectValues.put("name", project.getName());
+                    projectValues.put("color", project.getColor());
+                    db.insert("Project", OnConflictStrategy.IGNORE, projectValues);
                 }
             }
         };
     }
+
+    public abstract ProjectDao projectDao();
+
+    public abstract TaskDao taskDao();
 }

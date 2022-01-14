@@ -38,36 +38,30 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
 
-    private TaskViewModel mTaskViewModel;
-
-    /**
-     * List of all projects available in the application
-     */
-    private ArrayList<Project> allProjects = new ArrayList<>();
-
-    /**
-     * List of all current tasks of the application
-     */
-    @NonNull
-    private ArrayList<Task> tasks = new ArrayList<>();
-
-    /**
-     * The adapter which handles the list of tasks
-     */
-    private final TasksAdapter adapter = new TasksAdapter(tasks, this);
-
-    /**
-     * The sort method to be used to display tasks
-     */
-    @NonNull
-    private SortMethod sortMethod = SortMethod.NONE;
-
     /**
      * Dialog to create a new task
      */
     @Nullable
     public AlertDialog dialog = null;
-
+    private TaskViewModel mTaskViewModel;
+    /**
+     * List of all projects available in the application
+     */
+    private ArrayList<Project> allProjects = new ArrayList<>();
+    /**
+     * List of all current tasks of the application
+     */
+    @NonNull
+    private ArrayList<Task> tasks = new ArrayList<>();
+    /**
+     * The adapter which handles the list of tasks
+     */
+    private final TasksAdapter adapter = new TasksAdapter(tasks, this);
+    /**
+     * The sort method to be used to display tasks
+     */
+    @NonNull
+    private SortMethod sortMethod = SortMethod.NONE;
     /**
      * EditText that allows user to set the name of a task
      */
@@ -99,30 +93,24 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+        initViews();
+        configureViewModel();
+    }
 
+    private void initViews() {
         listTasks = findViewById(R.id.list_tasks);
         lblNoTasks = findViewById(R.id.lbl_no_task);
-
         listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         listTasks.setAdapter(adapter);
-
-        findViewById(R.id.fab_add_task).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showAddTaskDialog();
-            }
-        });
-
-        configureViewModel();
+        findViewById(R.id.fab_add_task).setOnClickListener(view -> showAddTaskDialog());
     }
 
     private void configureViewModel() {
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
         this.mTaskViewModel = new ViewModelProvider(this, mViewModelFactory).get(TaskViewModel.class);
 
-        this.mTaskViewModel.getAllTasks().observe(this,this::updateListTasks);
+        this.mTaskViewModel.getAllTasks().observe(this, this::updateListTasks);
         this.mTaskViewModel.getAllProject().observe(this, projects -> {
             allProjects = (ArrayList<Project>) projects;
             adapter.updateProjects(projects);
@@ -200,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 dialogInterface.dismiss();
             }
             // If name has been set, but project has not been set (this should never occur)
-            else{
+            else {
                 dialogInterface.dismiss();
             }
         }
@@ -275,32 +263,19 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         alertBuilder.setTitle(R.string.add_task);
         alertBuilder.setView(R.layout.dialog_add_task);
         alertBuilder.setPositiveButton(R.string.add, null);
-        alertBuilder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                dialogEditText = null;
-                dialogSpinner = null;
-                dialog = null;
-            }
+        alertBuilder.setOnDismissListener(dialogInterface -> {
+            dialogEditText = null;
+            dialogSpinner = null;
+            dialog = null;
         });
 
         dialog = alertBuilder.create();
 
         // This instead of listener to positive button in order to avoid automatic dismiss
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+        dialog.setOnShowListener(dialogInterface -> {
 
-            @Override
-            public void onShow(DialogInterface dialogInterface) {
-
-                Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                button.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View view) {
-                        onPositiveButtonClick(dialog);
-                    }
-                });
-            }
+            Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(view -> onPositiveButtonClick(dialog));
         });
 
         return dialog;
